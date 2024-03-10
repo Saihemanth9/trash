@@ -1,0 +1,85 @@
+import nltk
+from nltk.chat.util import Chat, reflections
+
+# Define pairs of patterns and responses for the chatbot
+pairs = [
+    [
+        r"my name is (.*)",
+        ["Hello %1, how can I help you today?",]
+    ],
+    [
+        r"what is your name?",
+        ["My name is Chatbot and I'm here to assist you.",]
+    ],
+    [
+        r"how are you ?",
+        ["I'm doing good\nHow about You ?",]
+    ],
+    [
+        r"sorry (.*)",
+        ["It's alright", "No problem",]
+    ],
+    [
+        r"(.*) (hungry|sleepy|groot)",
+        ["%1 %2"]
+    ],
+    [
+        r"quit",
+        ["Bye, take care. See you soon!"]
+    ],
+]
+
+# Create a chatbot instance
+def chatbot():
+    print("Hi, I'm Chatbot! How can I help you today?")
+    chat = Chat(pairs, reflections)
+    while True:
+        user_input = input("You: ")
+        response = chat.respond(user_input)
+        print("Chatbot:", response)
+        if user_input == 'quit':
+            break
+
+if __name__ == "__main__":
+    nltk.download('punkt')  # Ensure the necessary NLTK data is downloaded
+    chatbot()
+import os
+import shutil
+
+def organize_files(source_folder, destination_folder):
+    # Create destination folders if they don't exist
+    for folder in destination_folders.values():
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+    # Iterate over files in the source folder
+    for filename in os.listdir(source_folder):
+        source_file = os.path.join(source_folder, filename)
+        # Check if it's a file (not directory)
+        if os.path.isfile(source_file):
+            # Get the file extension
+            _, ext = os.path.splitext(filename)
+            # Find destination folder based on file extension
+            dest_folder = destination_folders.get(ext.lower(), destination_folder)
+            dest_file = os.path.join(dest_folder, filename)
+            # Move the file to the destination folder
+            shutil.move(source_file, dest_file)
+            print(f"Moved '{filename}' to '{dest_folder}'")
+
+# Source folder where the files are initially located
+source_folder = 'source_folder'
+
+# Destination folders based on file extension
+destination_folders = {
+    '.txt': 'text_files',
+    '.pdf': 'pdf_files',
+    '.jpg': 'image_files',
+    '.png': 'image_files',
+    '.xlsx': 'excel_files',
+    '.docx': 'word_files',
+    # Add more file extensions and corresponding folders as needed
+}
+
+# Main function to organize files
+if __name__ == '__main__':
+    organize_files(source_folder, destination_folders)
